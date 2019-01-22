@@ -7133,7 +7133,7 @@ var pdfjsWebLibs;
    var activeService = null;
    function renderPage(activeServiceOnEntry, pdfDocument, pageNumber, size) {
     var scratchCanvas = activeService.scratchCanvas;
-    var PRINT_RESOLUTION = 600;
+    var PRINT_RESOLUTION = 1200;
     var PRINT_UNITS = PRINT_RESOLUTION / 72.0;
     scratchCanvas.width = Math.floor(size.width * PRINT_UNITS);
     scratchCanvas.height = Math.floor(size.height * PRINT_UNITS);
