@@ -7133,10 +7133,18 @@ var pdfjsWebLibs;
    var activeService = null;
    function renderPage(activeServiceOnEntry, pdfDocument, pageNumber, size) {
     var scratchCanvas = activeService.scratchCanvas;
+
+    var MAX_CANVAS_AREA = 268435456; // Per https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas#Maximum_canvas_size
     var PRINT_RESOLUTION = 600;
-    var PRINT_UNITS = PRINT_RESOLUTION / 72.0;
-    scratchCanvas.width = Math.floor(size.width * PRINT_UNITS);
-    scratchCanvas.height = Math.floor(size.height * PRINT_UNITS);
+    do {
+      var PRINT_UNITS = PRINT_RESOLUTION / 72.0;
+      var canvasWidth = Math.floor(size.width * PRINT_UNITS);
+      var canvasHeight = Math.floor(size.height * PRINT_UNITS);
+      var canvasArea = canvasWidth * canvasHeight;
+    } while (canvasArea > MAX_CANVAS_AREA && (PRINT_RESOLUTION -= 1) > 0);
+
+    scratchCanvas.width = canvasWidth;
+    scratchCanvas.height = canvasHeight;
     var width = Math.floor(size.width * CSS_UNITS) + 'px';
     var height = Math.floor(size.height * CSS_UNITS) + 'px';
     var ctx = scratchCanvas.getContext('2d');
